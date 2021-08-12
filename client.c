@@ -13,22 +13,18 @@ void send_signal(int pid, int c)
 	usleep(1000);
 }
 
-void to_binary(int pid, int c, int digit)
+void parse_binary(int pid, int c, int digit)
 {
-	if (!c)
-	{
-		while (digit < 8)
-		{
-			send_signal(pid, 0);
-			digit++;
-		}
-		return ;
-	}
-	else
+	if (c)
 	{
 		digit++;
-		to_binary(pid, c / 2, digit);
+		parse_binary(pid, c / 2, digit);
 		send_signal(pid, c % 2);
+	}
+	else 
+	{
+		while (digit++ < 8)
+			send_signal(pid, 0);
 	}
 }
 
@@ -45,7 +41,7 @@ void post(int pid, char *str)
 	{
 		digit = 0;
 		c = (int)str[idx];
-		to_binary(pid, c, digit);
+		parse_binary(pid, c, digit);
 		idx++;
 	}
 	while (close_idx++ <= 7)
@@ -60,6 +56,10 @@ int main(int argc, char **argv)
 	{
 		printf("server pid : %d\n", atoi(argv[1]));
 		printf("send string : %s\n", argv[2]);
+		int len = 0;
+		while (argv[2][len])
+			len++;
+		printf("len : %d\n",  len);
 		post(atoi(argv[1]), argv[2]);
 	}
 	return (0);
