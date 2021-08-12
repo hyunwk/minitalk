@@ -5,15 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/12 23:31:18 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/12 23:45:48 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/08/13 02:02:59 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/08/13 02:03:01 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-#include <sys/signal.h>
-#include <stdio.h>
 void *reset_buf(void *buf)
 {
 	int idx;
@@ -23,41 +21,26 @@ void *reset_buf(void *buf)
 		((unsigned char *)buf)[idx++] = 0;
 	return (buf);
 }
-#include <time.h>
 
 void handler(int signum, siginfo_t *info, void *context)
 {
-	static unsigned char buf[200];
+	static unsigned char buf[100];
 	static int			 str_idx;
 	static int			 bit_idx;
 
-	static clock_t		start;
-	static clock_t		end;
-	static int			start_flag;
-
-	if (!start_flag && str_idx == 0)
+	if (bit_idx == 0)
 	{
-		start_flag = 1;
-		start = clock();
-	}
-	if (bit_idx == 8)
-	{
-		bit_idx = 0;
+		bit_idx = 8;
 		str_idx++;
 	}
 	if (signum == SIGUSR2)
-		buf[str_idx] |= (1 << (bit_idx));
-	bit_idx++;
+		buf[str_idx] |= (1 << (bit_idx - 1));
+	bit_idx--;
 	if (buf[str_idx] == 255 || str_idx == 99)
 	{
 		write(1, buf, str_idx);
 		if (buf[str_idx] == 255)
-		{
 			write(1, "\n", 1);
-			end = clock();
-			printf("sec : %lf\n", (double)(end-start)/CLOCKS_PER_SEC);
-			start_flag = 0;
-		}
 		reset_buf(buf);	
 		str_idx = 0;
 	}
@@ -86,3 +69,4 @@ int main(int argc, char **argv)
 		;
 	return (0);
 }
+

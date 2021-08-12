@@ -1,74 +1,48 @@
-#include <unistd.h>
-#include <signal.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/13 02:03:12 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/08/13 02:03:17 by hyunwkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_strlen(char *s)
+#include "minitalk.h"
+
+void send_signal(int pid, int c)
 {
-    int len;
-
-	len = 0;
-    while (s[len])
-        len++;
-	return (len);
+	if (c == 0)
+		kill(pid, SIGUSR1);
+	else if (c == 1)
+		kill(pid, SIGUSR2);
+	usleep(50);
 }
-
-int ft_atoi(char *s)
+void post(int pid, char *str)
 {
-	unsigned int num;
-	unsigned int idx;
+	int idx;
+	int close_idx;
+	int c;
+	int digit;
 
-	num = 0;
-	while ('0' <= *s && *s <= '9')
+	idx = 0;
+	close_idx = 0;
+	while (str[idx])
 	{
-		num = num * 10 + *s - '0';
-		s++;
+		c = (int)str[idx++];
+		digit = 8;
+		while (--digit >= 0)
+		{
+			if (c & 1 << digit)
+				send_signal(pid, 1);
+			else
+				send_signal(pid, 0);
+		}
 	}
-	return (num);
-}
-void ft_putstr(char *s)
-{
-	write(1, s, ft_strlen(s));
-}
-
-void ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void ft_putnbr(int n)
-{
-	if (n >= 10)
-    {
-		ft_putnbr(n / 10);
-		ft_putchar(n % 10 + '0');
-    }
-	if (n < 10)
-		ft_putchar(n + '0');
-}
-
-void send_signal(int pid, char *str)
-{
-    int idx;
-    int close_idx;
-    int c;
-
-    close_idx = 0;
-    while (*str)
-    {
-        c = (int)*str;
-        idx = 0;
-        while (idx <= 7)
-        {
-            if (c >> idx & 1)
-                kill(pid, SIGUSR2);
-            else
-                kill(pid, SIGUSR1);
-            usleep(500);
-            idx++;
-        }
-        str++;
-    }
-    while (close_idx++ <= 7)
-        kill(pid, SIGUSR2);
+	while (close_idx++ <= 7)
+		send_signal(pid, 1); 
 }
 
 int main(int argc, char **argv)
@@ -81,7 +55,8 @@ int main(int argc, char **argv)
 		ft_putstr(argv[2]);
         ft_putstr("\nlen : ");
 		ft_putnbr(ft_strlen(argv[2]));
-        send_signal(ft_atoi(argv[1]), argv[2]);
+        ft_putstr("\n");
+        post(ft_atoi(argv[1]), argv[2]);
     }
     return (0);
 }
