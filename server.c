@@ -35,9 +35,7 @@ void handler(int signum, siginfo_t *info, void *context)
 		str_idx++;
 	}
 	if (signum == SIGUSR2)
-	{
 		buf[str_idx] |= (1 << (bit_idx));
-	}
 	bit_idx++;
 	if (buf[str_idx] == 255 || str_idx == 99)
 	{

@@ -1,48 +1,88 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/signal.h>
 #include <unistd.h>
 #include <signal.h>
 
-void post(int pid, char *str)
+int ft_strlen(char *s)
 {
-	int idx;
-	int close_idx;
-	int c;
+    int len;
 
-	close_idx = 0;
-	while (*str)
+	len = 0;
+    while (s[len])
+        len++;
+	return (len);
+}
+
+int ft_atoi(char *s)
+{
+	unsigned int num;
+	unsigned int idx;
+
+	num = 0;
+	while ('0' <= *s && *s <= '9')
 	{
-		c = (int)*str;
-		idx = 0;
-		while (idx <= 7)
-		{
-			if (c >> idx & 1)
-				kill(pid, SIGUSR2);
-			else
-				kill(pid, SIGUSR1);
-			usleep(500);
-			idx++;
-		}
-		str++;
+		num = num * 10 + *s - '0';
+		s++;
 	}
-	while (close_idx++ <= 7)
-		kill(pid, SIGUSR2); 
+	return (num);
+}
+void ft_putstr(char *s)
+{
+	write(1, s, ft_strlen(s));
+}
+
+void ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void ft_putnbr(int n)
+{
+	if (n >= 10)
+    {
+		ft_putnbr(n / 10);
+		ft_putchar(n % 10 + '0');
+    }
+	if (n < 10)
+		ft_putchar(n + '0');
+}
+
+void send_signal(int pid, char *str)
+{
+    int idx;
+    int close_idx;
+    int c;
+
+    close_idx = 0;
+    while (*str)
+    {
+        c = (int)*str;
+        idx = 0;
+        while (idx <= 7)
+        {
+            if (c >> idx & 1)
+                kill(pid, SIGUSR2);
+            else
+                kill(pid, SIGUSR1);
+            usleep(500);
+            idx++;
+        }
+        str++;
+    }
+    while (close_idx++ <= 7)
+        kill(pid, SIGUSR2);
 }
 
 int main(int argc, char **argv)
 {
-	if (argc != 3)
-		printf("usage %s error\n", argv[0]);
-	else
-	{
-		printf("server pid : %d\n", atoi(argv[1]));
-		printf("send string : %s\n", argv[2]);
-		int len = 0;
-		while (argv[2][len])
-			len++;
-		printf("len : %d\n",  len);
-		post(atoi(argv[1]), argv[2]);
-	}
-	return (0);
+    if (argc == 3)
+    {
+        ft_putstr("server pid :");
+		ft_putstr(argv[1]);
+        ft_putstr("\nsend string : ");
+		ft_putstr(argv[2]);
+        ft_putstr("\nlen : ");
+		ft_putnbr(ft_strlen(argv[2]));
+        send_signal(ft_atoi(argv[1]), argv[2]);
+    }
+    return (0);
 }
+
