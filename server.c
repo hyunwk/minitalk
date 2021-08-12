@@ -14,13 +14,14 @@ void *reset_buf(void *buf)
 	return (buf);
 }
 #include <time.h>
+
 void handler(int signum, siginfo_t *info, void *context)
 {
 	static unsigned char buf[200];
 	static int			 str_idx;
 	static int			 bit_idx;
-	static clock_t start;
-	static clock_t end;
+	static clock_t		start;
+	static clock_t		end;
 	static int			start_flag;
 
 	if (!start_flag && str_idx == 0)
@@ -28,14 +29,16 @@ void handler(int signum, siginfo_t *info, void *context)
 		start_flag = 1;
 		start = clock();
 	}
-	if (bit_idx == 0)
+	if (bit_idx == 8)
 	{
-		bit_idx = 8;
+		bit_idx = 0;
 		str_idx++;
 	}
 	if (signum == SIGUSR2)
-		buf[str_idx] |= (1 << (bit_idx - 1));
-	bit_idx--;
+	{
+		buf[str_idx] |= (1 << (bit_idx));
+	}
+	bit_idx++;
 	if (buf[str_idx] == 255 || str_idx == 99)
 	{
 		write(1, buf, str_idx);

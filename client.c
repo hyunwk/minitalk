@@ -10,22 +10,7 @@ void send_signal(int pid, int c)
 		kill(pid, SIGUSR1);
 	else if (c == 1)
 		kill(pid, SIGUSR2);
-	usleep(1000);
-}
-
-void parse_binary(int pid, int c, int digit)
-{
-	if (c)
-	{
-		digit++;
-		parse_binary(pid, c / 2, digit);
-		send_signal(pid, c % 2);
-	}
-	else 
-	{
-		while (digit++ < 8)
-			send_signal(pid, 0);
-	}
+	usleep(500);
 }
 
 void post(int pid, char *str)
@@ -33,16 +18,18 @@ void post(int pid, char *str)
 	int idx;
 	int close_idx;
 	int c;
-	int digit;
 
-	idx = 0;
 	close_idx = 0;
-	while (str[idx])
+	while (*str)
 	{
-		digit = 0;
-		c = (int)str[idx];
-		parse_binary(pid, c, digit);
-		idx++;
+		c = (int)*str;
+		idx = 0;
+		while (idx <= 7)
+		{
+			send_signal(pid, c >> idx & 1);
+			idx++;
+		}
+		str++;
 	}
 	while (close_idx++ <= 7)
 		send_signal(pid, 1); 
