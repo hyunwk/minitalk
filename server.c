@@ -1,9 +1,19 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <sys/signal.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/12 23:31:18 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/08/12 23:45:48 by hyunwkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minitalk.h"
+
+#include <sys/signal.h>
+#include <stdio.h>
 void *reset_buf(void *buf)
 {
 	int idx;
@@ -20,6 +30,7 @@ void handler(int signum, siginfo_t *info, void *context)
 	static unsigned char buf[200];
 	static int			 str_idx;
 	static int			 bit_idx;
+
 	static clock_t		start;
 	static clock_t		end;
 	static int			start_flag;
@@ -58,15 +69,17 @@ int main(int argc, char **argv)
 
 	act.sa_sigaction = handler;
 	act.sa_flags = SA_SIGINFO;
-	printf("server pid : %d\n", getpid());
+	ft_putstr("server pid : ");
+	ft_putnbr(getpid());
+	ft_putstr("\nreceived string :");
 	if (sigaction(SIGUSR1, &act, NULL))
 	{
-		printf("sigaction sigusr1 error\n");
+		ft_putstr("sigaction sigusr1 error\n");
 		exit(0);
 	}
 	if (sigaction(SIGUSR2, &act, NULL))
 	{
-		printf("sigaction sigusr2 error\n");
+		ft_putstr("sigaction sigusr2 error\n");
 		exit(0);
 	}
 	while (1)
