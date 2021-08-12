@@ -4,15 +4,6 @@
 #include <unistd.h>
 #include <signal.h>
 
-void send_signal(int pid, int c)
-{
-	if (c == 0)
-		kill(pid, SIGUSR1);
-	else if (c == 1)
-		kill(pid, SIGUSR2);
-	usleep(500);
-}
-
 void post(int pid, char *str)
 {
 	int idx;
@@ -26,13 +17,17 @@ void post(int pid, char *str)
 		idx = 0;
 		while (idx <= 7)
 		{
-			send_signal(pid, c >> idx & 1);
+			if (c >> idx & 1)
+				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
+			usleep(500);
 			idx++;
 		}
 		str++;
 	}
 	while (close_idx++ <= 7)
-		send_signal(pid, 1); 
+		kill(pid, SIGUSR2); 
 }
 
 int main(int argc, char **argv)
