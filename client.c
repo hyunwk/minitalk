@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:03:12 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 15:12:17 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 19:10:05 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void post(int pid, char *str)
 	close_idx = 0;
 	while (str[idx])
 	{
-		c = (int)str[idx++];
+		c = (unsigned char)str[idx++];
 		digit = 8;
 		while (--digit >= 0)
 		{
@@ -45,12 +45,12 @@ void post(int pid, char *str)
 		}
 	}
 	while (close_idx++ <= 7)
-		send_signal(pid, 1); 
+		send_signal(pid, 0); 
 }
 
-void received_success(int s)
+void received_success()
 {
-	ft_putstr("Server ack success");
+	ft_putstr("receive from server success");
 }
 
 int main(int argc, char **argv)
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 		ft_putstr(argv[2]);
         ft_putstr("\nlen : ");
 		ft_putnbr(ft_strlen(argv[2]));
-        ft_putstr("\n");
+        ft_putstr("\nserver status : ");
         post(ft_atoi(argv[1]), argv[2]);
     }
     return (0);

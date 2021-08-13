@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:02:59 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 14:51:35 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 19:09:08 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void handler(int signum, siginfo_t *info, void *context)
 	static int			 str_idx;
 	static int			 bit_idx;
 
+	(void)context;
 	if (bit_idx == 0)
 	{
 		bit_idx = 8;
@@ -36,10 +37,10 @@ void handler(int signum, siginfo_t *info, void *context)
 	if (signum == SIGUSR2)
 		buf[str_idx] |= (1 << (bit_idx - 1));
 	bit_idx--;
-	if (buf[str_idx] == 255 || str_idx == 99)
+	if ((!buf[str_idx] && !bit_idx) || str_idx == 99)
 	{
 		write(1, buf, str_idx);
-		if (buf[str_idx] == 255)
+		if (!buf[str_idx] && !bit_idx)
 		{
 			kill(info->si_pid, SIGUSR1);
 			write(1, "\n", 1);
@@ -49,7 +50,7 @@ void handler(int signum, siginfo_t *info, void *context)
 	}
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	struct sigaction act;
 
@@ -58,18 +59,12 @@ int main(int argc, char **argv)
 	ft_putstr("server pid : ");
 	ft_putnbr(getpid());
 	ft_putstr("\nreceived string :");
-	if (sigaction(SIGUSR1, &act, NULL))
+	if (sigaction(SIGUSR1, &act, 0) || sigaction(SIGUSR2, &act, 0) )
 	{
-		ft_putstr("sigaction sigusr1 error\n");
-		exit(0);
-	}
-	if (sigaction(SIGUSR2, &act, NULL))
-	{
-		ft_putstr("sigaction sigusr2 error\n");
-		exit(0);
+		ft_putstr("sigaction error\n");
+		exit(1);
 	}
 	while (1)
 		;
 	return (0);
 }
-

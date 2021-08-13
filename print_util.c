@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 23:33:05 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/12 23:33:08 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 19:09:26 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int ft_strlen(char *s)
 int ft_atoi(char *s)
 {
 	unsigned int num;
-	unsigned int idx;
 
 	num = 0;
 	while ('0' <= *s && *s <= '9')
