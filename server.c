@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:02:59 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 02:03:01 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 14:51:35 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void handler(int signum, siginfo_t *info, void *context)
 	{
 		write(1, buf, str_idx);
 		if (buf[str_idx] == 255)
+		{
+			kill(info->si_pid, SIGUSR1);
 			write(1, "\n", 1);
+		}
 		reset_buf(buf);	
 		str_idx = 0;
 	}

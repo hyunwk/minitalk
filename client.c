@@ -6,11 +6,13 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:03:12 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 02:03:17 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 15:12:17 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+#include <sys/signal.h>
+#include <unistd.h>
 
 void send_signal(int pid, int c)
 {
@@ -20,6 +22,7 @@ void send_signal(int pid, int c)
 		kill(pid, SIGUSR2);
 	usleep(50);
 }
+
 void post(int pid, char *str)
 {
 	int idx;
@@ -45,10 +48,16 @@ void post(int pid, char *str)
 		send_signal(pid, 1); 
 }
 
+void received_success(int s)
+{
+	ft_putstr("Server ack success");
+}
+
 int main(int argc, char **argv)
 {
     if (argc == 3)
     {
+		signal(SIGUSR1, received_success);
         ft_putstr("server pid :");
 		ft_putstr(argv[1]);
         ft_putstr("\nsend string : ");
@@ -60,4 +69,3 @@ int main(int argc, char **argv)
     }
     return (0);
 }
-
