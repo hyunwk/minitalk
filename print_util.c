@@ -12,19 +12,19 @@
 
 #include "minitalk.h"
 
-int ft_strlen(char *s)
+int	ft_strlen(char *s)
 {
-    int len;
+	int	len;
 
 	len = 0;
-    while (s[len])
-        len++;
+	while (s[len])
+		len++;
 	return (len);
 }
 
-int ft_atoi(char *s)
+int	ft_atoi(char *s)
 {
-	unsigned int num;
+	unsigned int	num;
 
 	num = 0;
 	while ('0' <= *s && *s <= '9')
@@ -34,23 +34,24 @@ int ft_atoi(char *s)
 	}
 	return (num);
 }
-void ft_putstr(char *s)
+
+void	ft_putstr(char *s)
 {
 	write(1, s, ft_strlen(s));
 }
 
-void ft_putchar(char c)
+void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
-void ft_putnbr(int n)
+void	ft_putnbr(int n)
 {
 	if (n >= 10)
-    {
+	{
 		ft_putnbr(n / 10);
 		ft_putchar(n % 10 + '0');
-    }
+	}
 	if (n < 10)
 		ft_putchar(n + '0');
 }
