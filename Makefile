@@ -1,7 +1,9 @@
 all : 
 	gcc *.c 
 s : 
-	gcc *.c -o s
+	gcc server.c print_util.c -o s
 
 c : 
-	gcc *.c -o c
+	gcc client.c print_util.c -o c
+clean:
+	rm s c

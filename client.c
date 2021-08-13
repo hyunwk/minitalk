@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:03:12 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 19:53:54 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 22:14:09 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,12 @@ void	received_success(int signo)
 
 int	main(int argc, char **argv)
 {
-	if (argc == 3)
+	if (argc != 3)
+	{
+		ft_putstr("usage error : ");
+		ft_putstr(argv[0]);
+	}
+	else
 	{
 		signal(SIGUSR1, received_success);
 		ft_putstr("server pid :");
@@ -66,11 +71,6 @@ int	main(int argc, char **argv)
 		ft_putnbr(ft_strlen(argv[2]));
 		ft_putstr("\nserver response : ");
 		send_control(ft_atoi(argv[1]), argv[2]);
-	}
-	else
-	{
-		ft_putstr("usage error : ");
-		ft_putstr(argv[0]);
 	}
 	return (0);
 }

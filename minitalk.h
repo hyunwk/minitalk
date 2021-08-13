@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 23:31:16 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 19:53:34 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/13 22:13:49 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 // server.c
 void	handler(int signum, siginfo_t *info, void *none);
-void	reset_buf(void *buf);
 
 // client.c
 void	send_signal(int pid, int c);
