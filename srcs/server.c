@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:02:59 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/15 18:28:47 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/15 19:16:29 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,20 @@ void	handler(int signum, siginfo_t *info, void *none)
 	static int				bit_idx;
 
 	(void)none;
-	if (bit_idx == 0)
+	if (!bit_idx)
 	{
-		ft_putchar(buf);
 		buf = 0;
 		bit_idx = 8;
 	}
 	if (signum == SIGUSR2)
 		buf |= (1 << (bit_idx - 1));
 	bit_idx--;
+	if (!bit_idx)
+		ft_putchar(buf);
 	if (!buf && !bit_idx)
 	{
-		ft_putchar(buf);
-		if (!buf && !bit_idx)
-		{
-			kill(info->si_pid, SIGUSR1);
-			ft_putchar('\n');
-		}
+		kill(info->si_pid, SIGUSR1);
+		ft_putchar('\n');
 	}
 }
 
