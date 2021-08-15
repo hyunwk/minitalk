@@ -17,7 +17,7 @@ void	send_signal(int pid, char *str)
 	int	idx;
 	int	close_idx;
 	int	digit;
-	int c;
+	int	c;
 
 	idx = 0;
 	close_idx = 0;
