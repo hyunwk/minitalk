@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 23:31:16 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/13 22:13:49 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/15 17:11:17 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 void	handler(int signum, siginfo_t *info, void *none);
 
 // client.c
-void	send_signal(int pid, int c);
-void	send_control(int pid, char *str);
+void	send_signal(int pid, char *str);
 void	received_success(int signo);
 
 // print_util.c
