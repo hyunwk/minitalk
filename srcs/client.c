@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:03:12 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/15 17:20:31 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/15 18:28:18 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	send_signal(int pid, char *str)
 {
-	int	idx;
-	int	close_idx;
-	int	c;
-	int	digit;
+	int				idx;
+	int				close_idx;
+	int				digit;
+	unsigned char	c;
 
 	idx = 0;
 	close_idx = 0;
