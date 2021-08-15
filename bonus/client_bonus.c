@@ -5,14 +5,40 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/15 18:33:22 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/15 18:33:25 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/08/15 18:50:11 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/08/15 18:50:32 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
 
-void	send_signal(int pid, char *str)
+void	send_signal(int pid, int n)
+{
+	if (n == 0)
+	{
+		if (kill(pid, SIGUSR1))
+		{
+			ft_putstr("error");
+			exit(1);
+		}
+	}
+	else if (n == 1)
+	{
+		if (kill(pid, SIGUSR2))
+		{
+			ft_putstr("error");
+			exit(1);
+		}
+	}
+	else
+	{
+		ft_putstr("error");
+		exit(1);
+	}
+	usleep(50);
+}
+
+void	send_control(int pid, char *str)
 {
 	int				idx;
 	int				close_idx;
@@ -28,17 +54,13 @@ void	send_signal(int pid, char *str)
 		while (--digit >= 0)
 		{
 			if (c & 1 << digit)
-				kill(pid, SIGUSR2);
+				send_signal(pid, 1);
 			else
-				kill(pid, SIGUSR1);
-			usleep(50);
+				send_signal(pid, 0);
 		}
 	}
 	while (close_idx++ <= 7)
-	{
-		kill(pid, SIGUSR1);
-		usleep(50);
-	}
+		send_signal(pid, 0);
 }
 
 void	received_success(int signo)
@@ -60,12 +82,12 @@ int	main(int argc, char **argv)
 		signal(SIGUSR1, received_success);
 		ft_putstr("server pid :");
 		ft_putstr(argv[1]);
-		ft_putstr("\nsend_signal string : ");
+		ft_putstr("\nsend_control string : ");
 		ft_putstr(argv[2]);
 		ft_putstr("\nlen : ");
 		ft_putnbr(ft_strlen(argv[2]));
 		ft_putstr("\nserver response : ");
-		send_signal(ft_atoi(argv[1]), argv[2]);
+		send_control(ft_atoi(argv[1]), argv[2]);
 	}
 	return (0);
 }
