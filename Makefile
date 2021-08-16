@@ -6,7 +6,7 @@
 #    By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/13 22:28:48 by hyunwkim          #+#    #+#              #
-#    Updated: 2021/08/15 16:57:48 by hyunwkim         ###   ########.fr        #
+#    Updated: 2021/08/16 17:34:18 by hyunwkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,3 +53,5 @@ fclean : clean
 	rm -f $(NAME) $(NAME_C) $(BONUS_S) $(BONUS_C)
 
 re : fclean all
+
+.PHONY : all bonus clean fclean re

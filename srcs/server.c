@@ -6,11 +6,12 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 02:02:59 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/08/15 19:39:46 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/08/16 17:34:31 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+#include <unistd.h>
 
 void	handler(int signum, siginfo_t *info, void *none)
 {
